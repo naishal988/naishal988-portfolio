@@ -1,35 +1,56 @@
-Naishal's Cyber Portfolio 🚀
+<div align="center">
+  <h1>🚀 NAISHAL / CYBER PORTFOLIO</h1>
+  <p>A high-performance, interactive cyber-themed portfolio with CRT glitch aesthetics and cinematic boot sequences.</p>
 
-Welcome to the repository of my personal portfolio website.
+  <!-- Badges -->
+  <a href="https://github.com/naishal988">
+    <img src="https://img.shields.io/badge/GitHub-naishal988-181717?style=for-the-badge&logo=github" alt="GitHub"/>
+  </a>
+  <a href="mailto:naishalpnadiya988@gmail.com">
+    <img src="https://img.shields.io/badge/Email-naishalpnadiya988-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/>
+  </a>
+  <img src="https://img.shields.io/badge/License-Custom_Copyright-red?style=for-the-badge" alt="License"/>
+</div>
 
-🌐 Live Website: [Insert Your Vercel/Netlify Link Here]
+<br />
 
-This website is custom-built to showcase my journey, projects, and skills in Cybersecurity and Software Development. It features a custom Three.js WebGL background, native smooth scrolling, GSAP animations, and a unique terminal-inspired design.
+## ⚠️ Strict Usage Notice (Please Read)
 
-⚠️ Usage Notice & Copyright
+> **This repository is public for viewing and learning purposes ONLY.**
 
-This repository is made public for learning and inspiration purposes only.
+A massive amount of time and effort went into building this unique digital experience, structuring the animations, and crafting the custom cinematic pre-loaders. 
 
-Please DO NOT:
+**You are strictly PROHIBITED from:**
+- ❌ Cloning this repository to host as your own personal portfolio.
+- ❌ Forking the code and simply changing the name, text, or colors.
+- ❌ Ripping the custom Three.js WebGL background, live-typing terminal, or the CRT glitch logic for your own projects.
 
-Clone this repository to use as your own personal portfolio.
+If you are inspired by this layout, please build your own version from scratch. Be authentic to your own journey. **Do not copy.**
 
-Replicate the exact design, layout, or 3D visual concepts.
+---
 
-Copy my personal descriptions, project details, or terminal configurations.
+## 💻 The Tech Stack
+Developed natively on **Linux Mint Cinnamon**, leveraging modern web technologies for maximum performance:
+- **Core:** HTML5, CSS3, JavaScript (ES6+)
+- **3D & Canvas:** Three.js (WebGL)
+- **Animations:** GSAP (ScrollTrigger, ScrollToPlugin), Custom CSS Keyframes
+- **Styling:** Tailwind CSS
 
-Use this project for commercial or client work.
+---
 
-You are free to explore the code to learn how the Three.js canvas, GSAP animations, or terminal typing effects were implemented. However, please build your own unique version from scratch. Do not just copy.
+## 📂 Featured Projects
+This portfolio strictly showcases authentic builds and ongoing development work:
+1. **PhishGuard ZK:** Co-developed with Sruthika to tackle phishing threats (MLH Hackathon).
+2. **Nexus (WIP):** A high-performance document editor currently in development, built to rival Apple Pages, Google Docs, and MS Word.
 
-🛠️ Tech Stack
+---
 
-HTML5 / CSS3 / JavaScript
+## 📞 Connect with naishalcybersec
+- **GitHub:** [github.com/naishal988](https://github.com/naishal988)
+- **Email:** [naishalpnadiya988@gmail.com](mailto:naishalpnadiya988@gmail.com)
 
-Tailwind CSS
+<br/>
 
-Three.js (WebGL 3D Canvas)
-
-GSAP (ScrollTrigger)
-
-Designed & Built by Naishal
+<div align="center">
+  <i>&copy; 2026 Naishal Nadiya. All Rights Reserved.</i>
+</div>
