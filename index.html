@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naishal | Developer & Tech Enthusiast</title>
+    
+    <!-- Favicon (Hacker Laptop Emoji) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Space Grotesk for Tech Vibe -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: '#00ffcc', // Neon Cyan/Green
+                        dark: '#050505',
+                        cyberDark: '#003328',
+                        glass: 'rgba(255, 255, 255, 0.03)',
+                    },
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Bulletproof Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden; /* Prevent horizontal scroll, vertical unlocked after load */
+            cursor: none; 
+        }
+
+        /* 3D Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        /* Hacker Background Image - Cinematic Glitch & Fade Setup */
+        #hacker-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            z-index: -3; 
+            opacity: 0.15; 
+            transition: opacity 2s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s ease;
+            filter: grayscale(90%) brightness(40%) contrast(120%);
+        }
+
+        .smooth-glitch-active {
+            animation: cinematicGlitch 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .bg-fade-out {
+            opacity: 0 !important;
+        }
+
+        @keyframes cinematicGlitch {
+            0% { transform: translate(0); clip-path: inset(0 0 0 0); }
+            10% { transform: translate(-5px, 2px); clip-path: inset(10% 0 80% 0); filter: drop-shadow(4px 0 #ff003c); }
+            20% { transform: translate(5px, -2px); clip-path: inset(80% 0 10% 0); filter: drop-shadow(-4px 0 #00ffcc); }
+            30% { transform: translate(-2px, 2px); clip-path: inset(40% 0 40% 0); filter: drop-shadow(2px 0 #00ffcc); }
+            40% { transform: translate(2px, -2px); clip-path: inset(20% 0 60% 0); filter: drop-shadow(-2px 0 #ff003c); }
+            50% { transform: translate(-1px, 1px); clip-path: inset(60% 0 20% 0); }
+            100% { transform: translate(0); clip-path: inset(0 0 0 0); filter: drop-shadow(0); }
+        }
+
+        /* Next Level CRT Flicker & Scanlines */
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04));
+            background-size: 100% 3px, 4px 100%;
+            z-index: 9997; 
+            pointer-events: none;
+            opacity: 0.2;
+            animation: crt-flicker 0.12s infinite;
+        }
+
+        @keyframes crt-flicker {
+            0% { opacity: 0.15; }
+            5% { opacity: 0.2; }
+            10% { opacity: 0.14; }
+            15% { opacity: 0.22; }
+            100% { opacity: 0.15; transform: translateY(1px); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #003328;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00ffcc;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00ffcc;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 999999;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffcc;
+        }
+        .cursor-outline {
+            width: 44px;
+            height: 44px;
+            border: 1px solid rgba(0, 255, 204, 0.4);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 999998;
+            transform: translate(-50%, -50%);
+            transition: width 0.15s, height 0.15s, background-color 0.15s, border-color 0.15s;
+        }
+
+        /* Glitch Effect for the Name */
+        .glitch-wrapper {
+            position: relative;
+        }
+        .glitch {
+            position: relative;
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            z-index: 1;
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+        .glitch::before {
+            left: 4px;
+            text-shadow: -3px 0 #ff00c1;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+            z-index: -1;
+        }
+        .glitch::after {
+            left: -4px;
+            text-shadow: -3px 0 #00ffcc;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 2.5s infinite linear alternate-reverse;
+            z-index: -2;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(10px, 9999px, 86px, 0); }
+            5% { clip: rect(69px, 9999px, 7px, 0); }
+            10% { clip: rect(43px, 9999px, 98px, 0); }
+            15% { clip: rect(98px, 9999px, 20px, 0); }
+            20% { clip: rect(8px, 9999px, 76px, 0); }
+            25% { clip: rect(32px, 9999px, 14px, 0); }
+            30% { clip: rect(72px, 9999px, 54px, 0); }
+            35% { clip: rect(2px, 9999px, 18px, 0); }
+            40% { clip: rect(90px, 9999px, 60px, 0); }
+            45% { clip: rect(40px, 9999px, 32px, 0); }
+            50% { clip: rect(15px, 9999px, 80px, 0); }
+            100% { clip: rect(20px, 9999px, 85px, 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 10px, 0); }
+            5% { clip: rect(45px, 9999px, 70px, 0); }
+            10% { clip: rect(80px, 9999px, 20px, 0); }
+            15% { clip: rect(15px, 9999px, 90px, 0); }
+            20% { clip: rect(90px, 9999px, 30px, 0); }
+            25% { clip: rect(30px, 9999px, 80px, 0); }
+            30% { clip: rect(70px, 9999px, 40px, 0); }
+            100% { clip: rect(80px, 9999px, 50px, 0); }
+        }
+
+        /* Mouse-Tracking Neon Border Glass Cards */
+        .glass-card {
+            background: rgba(10, 10, 10, 0.45);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 255, 204, 0.05);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s;
+            position: relative;
+            z-index: 1;
+        }
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: radial-gradient(
+                400px circle at var(--mouse-x) var(--mouse-y),
+                rgba(0, 255, 204, 0.8),
+                transparent 40%
+            );
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+        .glass-card:hover {
+            box-shadow: 0 15px 45px -10px rgba(0, 255, 204, 0.15);
+            transform: translateY(-8px) scale(1.02);
+            border-color: transparent; /* Let the before pseudo handle the border glow */
+        }
+
+        /* Terminal Style */
+        .terminal-header {
+            background: #0a0a0a;
+            border-bottom: 1px solid rgba(0, 255, 204, 0.1);
+        }
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            transition: opacity 0.3s;
+        }
+        .terminal-dot:hover { opacity: 0.7; }
+
+        ::selection {
+            background: rgba(0, 255, 204, 0.4);
+            color: #fff;
+        }
+        
+        .typing-cursor::after {
+            content: '█';
+            animation: blink 1s step-end infinite;
+            color: #00ffcc;
+            text-shadow: 0 0 8px #00ffcc;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Magnetic Button Container Reset */
+        .magnetic {
+            display: inline-block;
+            transform-origin: center;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyber selection:text-black overflow-hidden" id="body">
+
+    <!-- PRE-LOADER -->
+    <div id="preloader" class="fixed inset-0 z-[99999] pointer-events-none">
+        <div id="preloader-top" class="absolute top-0 left-0 w-full h-1/2 bg-[#050505] origin-top"></div>
+        <div id="preloader-bottom" class="absolute bottom-0 left-0 w-full h-1/2 bg-[#050505] origin-bottom border-t border-cyber/20"></div>
+        
+        <div id="preloader-content" class="absolute inset-0 z-10 flex flex-col items-center justify-center w-full px-6">
+            <div class="w-full max-w-2xl">
+                <p id="preloader-term" class="font-mono text-cyber text-sm md:text-base mb-8 text-left h-6"></p>
+                <h1 id="preloader-text" class="text-4xl md:text-6xl font-bold text-white mb-6 text-center tracking-widest font-mono"></h1>
+                <div id="preloader-bar-bg" class="w-full h-[2px] bg-gray-800 relative overflow-hidden opacity-0">
+                    <div id="preloader-bar" class="h-full bg-cyber w-0 shadow-[0_0_10px_#00ffcc]"></div>
+                </div>
+                <div class="flex justify-between w-full mt-2 opacity-0" id="preloader-stats">
+                    <span class="font-mono text-xs text-gray-500">SYS.BOOT</span>
+                    <span id="preloader-percent" class="font-mono text-xs text-cyber">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hacker Background Image (Guy with laptop) -->
+    <div id="hacker-bg"></div>
+
+    <!-- CRT Effect Overlay -->
+    <div class="crt-overlay"></div>
+
+    <!-- 3D Nodes Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 transition-transform duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center bg-dark/70 backdrop-blur-xl border-b border-cyber/10">
+            <a href="#home" class="text-xl font-bold tracking-wider text-white hover:text-cyber transition-colors cursor-pointer nav-link">
+                <span class="text-cyber">&lt;</span>Naishal <span class="text-cyber">/&gt;</span>
+            </a>
+            <div class="hidden md:flex space-x-8 text-sm font-mono text-gray-400">
+                <a href="#home" class="hover:text-cyber transition-colors nav-link">01. Home</a>
+                <a href="#about" class="hover:text-cyber transition-colors nav-link">02. About</a>
+                <a href="#projects" class="hover:text-cyber transition-colors nav-link">03. Projects</a>
+                <a href="#contact" class="hover:text-cyber transition-colors nav-link">04. Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex flex-col justify-center px-6 md:px-24 pt-20 relative">
+            <div class="max-w-5xl z-10">
+                <p class="text-cyber font-mono mb-4 text-lg gs-reveal opacity-0 translate-y-10">System status: <span class="text-green-500 animate-pulse drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]">Online</span>_</p>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-1 gs-reveal scramble-text opacity-0 translate-y-10" data-text="Hi, I'm">
+                    Hi, I'm
+                </h1>
+                <div class="glitch-wrapper mb-6 gs-reveal opacity-0 translate-y-10">
+                    <h1 class="glitch text-6xl md:text-8xl lg:text-9xl" data-text="Naishal.">Naishal.</h1>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-400 mb-8 gs-reveal scramble-text opacity-0 translate-y-10" data-text="I build things & explore systems.">
+                    I build things & explore systems.
+                </h2>
+                <p class="max-w-2xl text-gray-400 text-lg mb-10 leading-relaxed font-sans gs-reveal opacity-0 translate-y-10">
+                    I'm a developer and tech enthusiast with a passion for building clean, impactful digital experiences. Currently focused on developing <strong>Nexus</strong> (a modern document editor) and diving deeper into the world of Linux and development.
+                </p>
+                <div class="flex flex-wrap gap-5 gs-reveal opacity-0 translate-y-10">
+                    <div class="magnetic">
+                        <a href="#projects" class="inline-block px-8 py-3 rounded border border-cyber text-cyber font-mono hover:bg-cyber hover:text-black transition-colors duration-300 nav-link shadow-[0_0_15px_rgba(0,255,204,0.2)] hover:shadow-[0_0_30px_rgba(0,255,204,0.6)]">
+                            Check out my work!
+                        </a>
+                    </div>
+                    <div class="magnetic">
+                        <a href="#contact" class="inline-block px-8 py-3 rounded border border-gray-600 text-white font-mono hover:border-cyber hover:text-cyber transition-colors duration-300 nav-link bg-dark/50 backdrop-blur">
+                            Init Contact
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <a href="#about" class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce gs-reveal cursor-pointer nav-link opacity-0 translate-y-10">
+                <span class="text-gray-500 font-mono text-xs mb-2 tracking-widest">SCROLL</span>
+                <i class="fas fa-chevron-down text-cyber drop-shadow-[0_0_5px_rgba(0,255,204,0.8)]"></i>
+            </a>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="min-h-screen flex items-center px-6 md:px-24 py-20 relative pt-32">
+            <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <div class="about-text">
+                    <div class="flex items-center gap-4 mb-8">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white scramble-text" data-text="02. About Me"><span class="text-cyber font-mono">02.</span> About Me</h2>
+                        <div class="h-[1px] bg-gray-700 flex-grow"></div>
+                    </div>
+                    
+                    <div class="space-y-4 text-gray-400 text-lg font-sans leading-relaxed">
+                        <p>
+                            Hello! My name is Naishal. My journey in tech started with a deep curiosity about how things work under the hood. What started as exploring operating systems has evolved into building my own software and applications.
+                        </p>
+                        <p>
+                            Right now, my primary daily driver is <span class="text-cyber font-semibold drop-shadow-[0_0_2px_rgba(0,255,204,0.5)]">Linux Mint Cinnamon</span>, which gives me the perfect environment for development. I also actively use <span class="text-cyber font-semibold drop-shadow-[0_0_2px_rgba(0,255,204,0.5)]">Kali Linux</span> when I want to dive into security exploration and understand system vulnerabilities. 
+                        </p>
+                        <p>Here are a few technologies and concepts I've been working with recently:</p>
+                        
+                        <ul class="grid grid-cols-2 gap-2 font-mono text-sm mt-4 text-gray-300">
+                            <li class="hover:text-cyber transition-colors cursor-default"><i class="fas fa-caret-right text-cyber mr-2"></i>Linux (Mint / Kali)</li>
+                            <li class="hover:text-cyber transition-colors cursor-default"><i class="fas fa-caret-right text-cyber mr-2"></i>HTML / CSS / JS</li>
+                            <li class="hover:text-cyber transition-colors cursor-default"><i class="fas fa-caret-right text-cyber mr-2"></i>UI / UX Design</li>
+                            <li class="hover:text-cyber transition-colors cursor-default"><i class="fas fa-caret-right text-cyber mr-2"></i>Tailwind CSS</li>
+                            <li class="hover:text-cyber transition-colors cursor-default"><i class="fas fa-caret-right text-cyber mr-2"></i>AI Integrations</li>
+                            <li class="hover:text-cyber transition-colors cursor-default"><i class="fas fa-caret-right text-cyber mr-2"></i>Python</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Live Typing Terminal Graphic -->
+                <div class="relative w-full rounded-xl overflow-hidden glass-card shadow-2xl terminal-box">
+                    <div class="terminal-header px-4 py-3 flex items-center justify-between">
+                        <div class="flex space-x-2">
+                            <span class="terminal-dot bg-[#ff5f56]"></span>
+                            <span class="terminal-dot bg-[#ffbd2e]"></span>
+                            <span class="terminal-dot bg-[#27c93f]"></span>
+                        </div>
+                        <div class="text-xs font-mono text-gray-500">naishal@mint: ~</div>
+                        <div class="w-12"></div> <!-- Spacer -->
+                    </div>
+                    <div class="p-6 font-mono text-sm sm:text-base text-gray-300 h-[320px] overflow-y-auto bg-dark/90" id="terminal-body">
+                        <!-- Content will be injected by JS for typing effect -->
+                        <div id="typewriter-content"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="min-h-screen px-6 md:px-24 py-20 relative pt-32 glass-card-container">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-16 project-header">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white scramble-text" data-text="03. Featured Projects"><span class="text-cyber font-mono">03.</span> Featured Projects</h2>
+                    <div class="h-[1px] bg-gray-700 flex-grow"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="cards-grid">
+                    <!-- Project 1: PhishGuard ZK -->
+                    <div class="glass-card rounded-2xl p-8 project-card group cursor-pointer overflow-hidden bg-gradient-to-br from-dark to-[#0a1512]">
+                        <div class="relative z-10">
+                            <div class="flex justify-between items-center mb-6">
+                                <i class="fas fa-shield-alt text-4xl text-cyber group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(0,255,204,0.4)]"></i>
+                                <div class="flex gap-4 magnetic">
+                                    <a href="https://github.com/naishal988/MLH-Midnight-Hackathon-Project" target="_blank" class="text-gray-400 hover:text-white transition-colors relative z-20 p-2"><i class="fab fa-github text-xl"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-cyber transition-colors duration-300">PhishGuard ZK</h3>
+                            <p class="text-cyber/80 font-mono text-xs mb-4">by Naishal & Sruthika</p>
+                            <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                                An Advanced AI-Powered Phishing Detector built with Zero-Trust Architecture. Developed collaboratively for the MLH Midnight Hackathon. It analyzes links and prevents users from interacting with malicious web pages.
+                            </p>
+                            <ul class="flex flex-wrap gap-3 font-mono text-xs text-cyber/80">
+                                <li>AI / ML</li>
+                                <li>Zero-Trust</li>
+                                <li>Python</li>
+                                <li>Hackathon</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: Nexus -->
+                    <div class="glass-card rounded-2xl p-8 project-card group cursor-pointer overflow-hidden bg-gradient-to-br from-dark to-[#0a1512]">
+                        <div class="relative z-10">
+                            <div class="flex justify-between items-center mb-6">
+                                <i class="far fa-file-alt text-4xl text-cyber group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(0,255,204,0.4)]"></i>
+                                <div class="flex gap-4 magnetic">
+                                    <a href="https://github.com/naishal988" target="_blank" class="text-gray-400 hover:text-white transition-colors relative z-20 p-2"><i class="fab fa-github text-xl"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-cyber transition-colors duration-300">Nexus <span class="text-xs bg-cyber/20 text-cyber px-2 py-1 rounded ml-2">WIP</span></h3>
+                            <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                                A modern, heavily customized document editor inspired by Apple Pages. Aiming to compete with giants like MS Word and Google Docs by prioritizing a clean, distraction-free writing experience and beautiful UI. Currently in active development.
+                            </p>
+                            <ul class="flex flex-wrap gap-3 font-mono text-xs text-cyber/80">
+                                <li>Web Dev</li>
+                                <li>UI / UX</li>
+                                <li>Productivity</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 3: This Portfolio -->
+                    <div class="glass-card rounded-2xl p-8 project-card group cursor-pointer overflow-hidden bg-gradient-to-br from-dark to-[#0a1512]">
+                        <div class="relative z-10">
+                            <div class="flex justify-between items-center mb-6">
+                                <i class="fas fa-code text-4xl text-cyber group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(0,255,204,0.4)]"></i>
+                                <div class="flex gap-4 magnetic">
+                                    <a href="https://github.com/naishal988" target="_blank" class="text-gray-400 hover:text-white transition-colors relative z-20 p-2"><i class="fab fa-github text-xl"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-cyber transition-colors duration-300">Cyber Portfolio</h3>
+                            <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                                This exact website! Built from scratch to act as my personal corner of the web. Features custom WebGL/Three.js backgrounds, native smooth scrolling, GSAP animations, and a subtle hacker-themed visual aesthetic.
+                            </p>
+                            <ul class="flex flex-wrap gap-3 font-mono text-xs text-cyber/80">
+                                <li>HTML/CSS</li>
+                                <li>Three.js</li>
+                                <li>GSAP</li>
+                                <li>Vanilla JS</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 (View More) -->
+                    <div class="glass-card rounded-2xl p-8 project-card group cursor-pointer overflow-hidden flex flex-col justify-center items-center text-center bg-dark/30 hover:bg-dark/60 transition-colors">
+                        <div class="relative z-10 flex flex-col items-center">
+                            <i class="fab fa-github text-5xl text-gray-500 mb-4 group-hover:text-cyber transition-colors transform group-hover:scale-110 duration-300"></i>
+                            <h3 class="text-xl font-bold text-gray-400 group-hover:text-white transition-colors">View More Work</h3>
+                            <div class="magnetic mt-6">
+                                <a href="https://github.com/naishal988" target="_blank" class="px-6 py-2 border border-gray-600 rounded text-sm font-mono hover:border-cyber hover:bg-cyber hover:text-black transition-all">Go to Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="min-h-[80vh] flex flex-col items-center justify-center px-6 py-20 relative text-center pt-32">
+            <div class="max-w-2xl w-full contact-content z-10">
+                <p class="text-cyber font-mono mb-4 text-sm tracking-widest uppercase scramble-text" data-text="04. What's Next?">04. What's Next?</p>
+                <h2 class="text-5xl md:text-7xl font-bold text-white mb-6 scramble-text" data-text="Get In Touch">Get In Touch</h2>
+                <p class="text-gray-400 text-lg mb-10 leading-relaxed font-sans">
+                    Whether you want to discuss tech, collaborate on an open-source project, or just say hi, my inbox is always open. I'll try my best to get back to you!
+                </p>
+                <div class="magnetic">
+                    <a href="mailto:naishalpnadiya988@gmail.com" class="inline-block px-12 py-4 rounded border-2 border-cyber text-cyber font-mono text-lg font-bold hover:bg-cyber hover:text-black transition-colors duration-300 shadow-[0_0_20px_rgba(0,255,204,0.3)] hover:shadow-[0_0_40px_rgba(0,255,204,0.8)] nav-link">
+                        Say Hello
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 border-t border-cyber/10 bg-dark/90 backdrop-blur-md relative z-10">
+            <div class="flex justify-center gap-8 mb-6">
+                <div class="magnetic">
+                    <a href="https://github.com/naishal988" target="_blank" class="text-gray-500 hover:text-white hover:-translate-y-1 transition-all text-2xl nav-link p-2 inline-block"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <p class="font-mono text-xs text-gray-500 hover:text-cyber transition-colors cursor-pointer tracking-wider">
+                &copy; 2026 Designed & Built by Naishal
+            </p>
+        </footer>
+    </main>
+
+    <!-- App Logic -->
+    <script type="module">
+        import * as THREE from 'three';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+        // --- 0. Preloader & GSAP Sequence ---
+        const initPreloader = () => {
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    // Unlock scrolling
+                    document.getElementById('body').classList.remove('overflow-hidden');
+                    // Hide preloader completely to free DOM
+                    document.getElementById('preloader').style.display = 'none';
+                    // Fire hero animations
+                    playHeroAnimations();
+                }
+            });
+
+            // Phase 1: Typing
+            const termText = "./init_system.sh";
+            const termEl = document.getElementById('preloader-term');
+            tl.to({}, {
+                duration: 1.2,
+                ease: "none",
+                onUpdate: function() {
+                    const progress = Math.floor(this.progress() * termText.length);
+                    termEl.innerHTML = `<span class="text-green-500">naishal@cyber-nexus</span>:<span class="text-blue-400">~</span>$ ${termText.substring(0, progress)}<span class="typing-cursor"></span>`;
+                }
+            });
+
+            tl.to({}, { duration: 0.3 }); // Small pause after typing
+
+            // Phase 2: Decrypting & Loading Bar
+            const preloaderText = document.getElementById('preloader-text');
+            const originalText = "DECRYPTING SYSTEM";
+            const chars = '01!@#$%^&*<>_\\/[]{}';
+
+            tl.to(["#preloader-bar-bg", "#preloader-stats"], { opacity: 1, duration: 0.2 });
+
+            tl.to("#preloader-bar", {
+                width: "100%",
+                duration: 2.2,
+                ease: "power2.inOut",
+                onUpdate: function() {
+                    // Loading Percentage
+                    const p = this.progress();
+                    document.getElementById('preloader-percent').innerText = Math.floor(p * 100) + "%";
+                    
+                    // Scramble text effect
+                    let current = '';
+                    for(let i = 0; i < originalText.length; i++) {
+                        if (originalText[i] === ' ') {
+                            current += ' ';
+                            continue;
+                        }
+                        if(Math.random() > 0.4) {
+                            current += chars[Math.floor(Math.random() * chars.length)];
+                        } else {
+                            current += originalText[i];
+                        }
+                    }
+                    preloaderText.innerText = current;
+                },
+                onComplete: function() {
+                    preloaderText.innerText = originalText;
+                }
+            });
+
+            // Phase 3: Access Granted Flash
+            tl.to(preloaderText, {
+                duration: 0.1,
+                onStart: () => {
+                    preloaderText.innerText = "ACCESS GRANTED";
+                    preloaderText.classList.add("text-cyber", "drop-shadow-[0_0_15px_#00ffcc]");
+                }
+            }, "+=0.2");
+
+            tl.to({}, { duration: 0.6 }); // Hold briefly so user reads it
+
+            // Phase 4: Fade content & Split Reveal
+            tl.to("#preloader-content", {
+                opacity: 0,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+
+            tl.to("#preloader-top", {
+                yPercent: -100,
+                duration: 1.2,
+                ease: "power4.inOut"
+            }, "split");
+            
+            tl.to("#preloader-bottom", {
+                yPercent: 100,
+                duration: 1.2,
+                ease: "power4.inOut"
+            }, "split");
+        };
+
+        const playHeroAnimations = () => {
+            const heroTimeline = gsap.timeline();
+            heroTimeline.to(".gs-reveal", 
+                { y: 0, opacity: 1, duration: 1, stagger: 0.12, ease: "power3.out" }
+            );
+        };
+
+
+        // --- 1. Custom Cursor Logic ---
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        const interactiveElements = document.querySelectorAll('a, button, .cursor-pointer, .nav-link, .magnetic');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 300, fill: "forwards" });
+        });
+
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.width = '60px';
+                cursorOutline.style.height = '60px';
+                cursorOutline.style.backgroundColor = 'rgba(0, 255, 204, 0.1)';
+                cursorOutline.style.borderColor = '#00ffcc';
+                cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.width = '44px';
+                cursorOutline.style.height = '44px';
+                cursorOutline.style.backgroundColor = 'transparent';
+                cursorOutline.style.borderColor = 'rgba(0, 255, 204, 0.4)';
+                cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+        });
+
+        // --- 2. Magnetic Buttons ---
+        const magnets = document.querySelectorAll('.magnetic');
+        magnets.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const h = rect.width / 2;
+                const v = rect.height / 2;
+                const x = e.clientX - rect.left - h;
+                const y = e.clientY - rect.top - v;
+                
+                gsap.to(btn, {
+                    x: x * 0.3,
+                    y: y * 0.3,
+                    duration: 0.4,
+                    ease: "power3.out"
+                });
+            });
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.7,
+                    ease: "elastic.out(1, 0.3)"
+                });
+            });
+        });
+
+        // --- 3. Glass Card Mouse Tracking ---
+        document.getElementById('cards-grid').addEventListener('mousemove', e => {
+            for(const card of document.querySelectorAll('.glass-card')) {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty("--mouse-x", `${x}px`);
+                card.style.setProperty("--mouse-y", `${y}px`);
+            }
+        });
+
+        // --- 4. Smooth Scrolling ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // --- 5. Glitch & Fade Effect ---
+        const triggerSmoothGlitchFade = () => {
+            const bg = document.getElementById('hacker-bg');
+            if (!bg || bg.classList.contains('bg-fade-out')) return; 
+            
+            bg.classList.add('smooth-glitch-active');
+            
+            setTimeout(() => {
+                bg.classList.remove('smooth-glitch-active');
+                bg.classList.add('bg-fade-out'); 
+                
+                setTimeout(() => {
+                    bg.classList.remove('bg-fade-out'); 
+                }, 3500); 
+            }, 500); 
+        };
+        setInterval(triggerSmoothGlitchFade, 12000);
+
+        // --- 6. GSAP Scramble Text Effect ---
+        const chars = '01!@#$%^&*<>_\\/[]{}';
+        const scrambleText = (element) => {
+            const originalText = element.getAttribute('data-text');
+            const obj = { value: 0 };
+            
+            gsap.to(obj, {
+                value: originalText.length,
+                duration: 1.2,
+                ease: "power2.out",
+                onUpdate: () => {
+                    let current = '';
+                    for(let i = 0; i < originalText.length; i++) {
+                        if(i < obj.value) {
+                            current += originalText[i];
+                        } else if (originalText[i] === ' ') {
+                            current += ' ';
+                        } else {
+                            current += chars[Math.floor(Math.random() * chars.length)];
+                        }
+                    }
+                    element.innerText = current;
+                }
+            });
+        };
+
+        // --- 7. Live Terminal Typing ---
+        const terminalCommands = [
+            { text: "whoami", delay: 800, output: "naishal" },
+            { text: "cat skills.txt", delay: 1500, output: "[+] Linux (Mint/Kali)<br>[+] Web Development<br>[+] UI/UX Design<br>[+] Security Exploration" },
+            { text: "./build_nexus.sh", delay: 2000, output: "<span class='text-cyber animate-pulse drop-shadow-[0_0_5px_rgba(0,255,204,0.8)]'>Compiling dependencies... Building Nexus environment.</span>" }
+        ];
+
+        const typewriterContent = document.getElementById('typewriter-content');
+        let hasTyped = false;
+
+        const typeTerminal = async () => {
+            if(hasTyped) return;
+            hasTyped = true; 
+            typewriterContent.innerHTML = '';
+            
+            const sleep = ms => new Promise(r => setTimeout(r, ms));
+            
+            for (let i = 0; i < terminalCommands.length; i++) {
+                const cmd = terminalCommands[i];
+                
+                const line = document.createElement('div');
+                line.className = 'mb-2';
+                line.innerHTML = `<span class="text-green-400">naishal@mint</span>:<span class="text-blue-400">~</span>$ <span class="cmd-text typing-cursor"></span>`;
+                typewriterContent.appendChild(line);
+                
+                const cmdSpan = line.querySelector('.cmd-text');
+                
+                for (let char of cmd.text) {
+                    cmdSpan.textContent += char;
+                    await sleep(40); 
+                }
+                
+                cmdSpan.classList.remove('typing-cursor');
+                await sleep(300); 
+                
+                const output = document.createElement('div');
+                output.className = 'mb-4 text-gray-100';
+                output.innerHTML = cmd.output;
+                typewriterContent.appendChild(output);
+                
+                await sleep(cmd.delay);
+            }
+            
+            const finalLine = document.createElement('div');
+            finalLine.innerHTML = `<span class="text-green-400">naishal@mint</span>:<span class="text-blue-400">~</span>$ <span class="typing-cursor"></span>`;
+            typewriterContent.appendChild(finalLine);
+        };
+
+        // --- 8. WebGL Three.js Background with Bloom ---
+        const initThreeJS = () => {
+            const canvas = document.getElementById('bg-canvas');
+            const scene = new THREE.Scene();
+            
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 180;
+
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Post-processing Bloom
+            const renderScene = new RenderPass(scene, camera);
+            const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+            bloomPass.threshold = 0.1;
+            bloomPass.strength = 1.2; 
+            bloomPass.radius = 0.5;
+
+            const composer = new EffectComposer(renderer);
+            composer.addPass(renderScene);
+            composer.addPass(bloomPass);
+
+            // Network Particles
+            const particlesCount = 350; 
+            const positions = new Float32Array(particlesCount * 3);
+            const velocities = [];
+
+            for(let i = 0; i < particlesCount * 3; i+=3) {
+                positions[i] = (Math.random() - 0.5) * 600;
+                positions[i+1] = (Math.random() - 0.5) * 600;
+                positions[i+2] = (Math.random() - 0.5) * 600;
+                
+                velocities.push({
+                    x: (Math.random() - 0.5) * 0.3,
+                    y: (Math.random() - 0.5) * 0.3,
+                    z: (Math.random() - 0.5) * 0.3
+                });
+            }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const particleMaterial = new THREE.PointsMaterial({
+                color: 0x00ffcc,
+                size: 2.0,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
+
+            const particles = new THREE.Points(geometry, particleMaterial);
+            scene.add(particles);
+
+            // Network Lines
+            const lineMaterial = new THREE.LineBasicMaterial({
+                color: 0x00ffcc,
+                transparent: true,
+                opacity: 0.1,
+                blending: THREE.AdditiveBlending
+            });
+            
+            const lineGeometry = new THREE.BufferGeometry();
+            const lineMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
+            scene.add(lineMesh);
+
+            let mouseX = 0;
+            let mouseY = 0;
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX);
+                mouseY = (event.clientY - windowHalfY);
+            });
+
+            const clock = new THREE.Clock();
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                const elapsedTime = clock.getElapsedTime();
+
+                // Parallax Mouse Effect
+                const targetX = mouseX * 0.0005;
+                const targetY = mouseY * 0.0005;
+                
+                particles.rotation.y += 0.05 * (targetX - particles.rotation.y);
+                particles.rotation.x += 0.05 * (targetY - particles.rotation.x);
+                lineMesh.rotation.y = particles.rotation.y;
+                lineMesh.rotation.x = particles.rotation.x;
+
+                // Move particles and draw connecting lines
+                const pos = particles.geometry.attributes.position.array;
+                const linePositions = [];
+                
+                for(let i=0; i<particlesCount; i++) {
+                    pos[i*3] += velocities[i].x;
+                    pos[i*3+1] += velocities[i].y;
+                    pos[i*3+2] += velocities[i].z;
+
+                    // Bounds checking to bounce
+                    if(pos[i*3] > 300 || pos[i*3] < -300) velocities[i].x *= -1;
+                    if(pos[i*3+1] > 300 || pos[i*3+1] < -300) velocities[i].y *= -1;
+                    if(pos[i*3+2] > 300 || pos[i*3+2] < -300) velocities[i].z *= -1;
+
+                    // Connect lines
+                    for(let j=i+1; j<particlesCount; j++) {
+                        const dx = pos[i*3] - pos[j*3];
+                        const dy = pos[i*3+1] - pos[j*3+1];
+                        const dz = pos[i*3+2] - pos[j*3+2];
+                        const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                        
+                        if(dist < 50) { 
+                            linePositions.push(
+                                pos[i*3], pos[i*3+1], pos[i*3+2],
+                                pos[j*3], pos[j*3+1], pos[j*3+2]
+                            );
+                        }
+                    }
+                }
+                
+                particles.geometry.attributes.position.needsUpdate = true;
+                lineMesh.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+
+                composer.render(); // Use composer instead of renderer for bloom
+            };
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                composer.setSize(window.innerWidth, window.innerHeight);
+            });
+        };
+
+        // --- 9. GSAP Scroll Animations Initialization ---
+        const initGSAP = () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Note: Hero animations are removed from here and placed in playHeroAnimations() 
+            // so they trigger perfectly AFTER the loader finishes.
+
+            // Scramble Text Triggers
+            document.querySelectorAll('.scramble-text:not(.gs-reveal)').forEach(el => {
+                ScrollTrigger.create({
+                    trigger: el,
+                    start: "top 85%",
+                    onEnter: () => scrambleText(el)
+                });
+            });
+
+            // Navbar hide/show
+            let lastScrollTop = 0;
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    navbar.style.transform = 'translateY(-100%)';
+                } else {
+                    navbar.style.transform = 'translateY(0)';
+                }
+                lastScrollTop = scrollTop;
+            });
+
+            // About Section
+            gsap.fromTo(".about-text", 
+                { x: -50, opacity: 0 },
+                {
+                    scrollTrigger: { trigger: "#about", start: "top 75%" },
+                    x: 0, opacity: 1, duration: 1, ease: "power2.out"
+                }
+            );
+
+            ScrollTrigger.create({
+                trigger: ".terminal-box",
+                start: "top 75%",
+                onEnter: () => typeTerminal()
+            });
+
+            gsap.fromTo(".terminal-box", 
+                { x: 50, opacity: 0, scale: 0.95 },
+                {
+                    scrollTrigger: { trigger: "#about", start: "top 75%" },
+                    x: 0, opacity: 1, scale: 1, duration: 1, ease: "power2.out"
+                }
+            );
+
+            // Projects Section
+            gsap.fromTo(".project-header",
+                { y: 30, opacity: 0 },
+                {
+                    scrollTrigger: { trigger: "#projects", start: "top 80%" },
+                    y: 0, opacity: 1, duration: 0.8
+                }
+            );
+
+            gsap.fromTo(".project-card",
+                { y: 60, opacity: 0 },
+                {
+                    scrollTrigger: { trigger: "#projects", start: "top 75%" },
+                    y: 0, opacity: 1, duration: 0.6, stagger: 0.15, ease: "back.out(1.2)"
+                }
+            );
+
+            // Contact Section
+            gsap.fromTo(".contact-content",
+                { y: 40, opacity: 0, scale: 0.95 },
+                {
+                    scrollTrigger: { trigger: "#contact", start: "top 80%" },
+                    y: 0, opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.5)"
+                }
+            );
+        };
+
+        // Initialize Everything
+        window.onload = () => {
+            initThreeJS();
+            initGSAP();
+            initPreloader(); // Fire the loader which subsequently triggers hero animations
+        };
+    </script>
+</body>
+</html>
