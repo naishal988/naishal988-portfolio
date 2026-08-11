@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Naishal | Developer & Tech Enthusiast</title>
     
-    <!-- Favicon (Hacker Laptop Emoji) -->
+    <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
 
     <!-- Tailwind CSS -->
@@ -33,7 +33,7 @@
             theme: {
                 extend: {
                     colors: {
-                        cyber: '#00ffcc', // Neon Cyan/Green
+                        cyber: '#00ffcc',
                         dark: '#050505',
                         cyberDark: '#003328',
                         glass: 'rgba(255, 255, 255, 0.03)',
@@ -48,7 +48,7 @@
     </script>
 
     <style>
-        /* Bulletproof Smooth Scrolling */
+        /* Bulletproof Smooth Scrolling & Overflow fixes */
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 80px;
@@ -61,7 +61,7 @@
             height: 100%;
             background-color: #050505;
             color: #ffffff;
-            overflow-x: hidden; /* Prevent horizontal scroll, vertical unlocked after load */
+            overflow-x: hidden !important; /* CRITICAL for mobile GSAP */
             cursor: none; 
         }
 
@@ -77,7 +77,7 @@
             pointer-events: none;
         }
 
-        /* Hacker Background Image - Cinematic Glitch & Fade Setup */
+        /* Hacker Background Image */
         #hacker-bg {
             position: fixed;
             top: 0;
@@ -109,7 +109,7 @@
             100% { transform: translate(0); clip-path: inset(0 0 0 0); filter: drop-shadow(0); }
         }
 
-        /* Next Level CRT Flicker & Scanlines */
+        /* CRT Flicker */
         .crt-overlay {
             position: fixed;
             top: 0;
@@ -133,21 +133,12 @@
             100% { opacity: 0.15; transform: translateY(1px); }
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #050505;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #003328;
-            border-radius: 4px;
-            transition: background 0.3s;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00ffcc;
-        }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        @media (min-width: 768px) { ::-webkit-scrollbar { width: 6px; } }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #003328; border-radius: 4px; transition: background 0.3s; }
+        ::-webkit-scrollbar-thumb:hover { background: #00ffcc; }
 
         /* Custom Cursor */
         .cursor-dot {
@@ -173,20 +164,14 @@
             transition: width 0.15s, height 0.15s, background-color 0.15s, border-color 0.15s;
         }
         
-        /* Mobile Pointer Fix (Hide custom cursor on touch devices) */
-        @media (pointer: coarse) {
-            .cursor-dot, .cursor-outline {
-                display: none !important;
-            }
-            body, html {
-                cursor: auto;
-            }
+        /* Disable custom cursor on touch devices */
+        @media (pointer: coarse), (max-width: 768px) {
+            .cursor-dot, .cursor-outline { display: none !important; }
+            body, html { cursor: auto; }
         }
 
-        /* Glitch Effect for the Name */
-        .glitch-wrapper {
-            position: relative;
-        }
+        /* Glitch Effect */
+        .glitch-wrapper { position: relative; max-width: 100%; }
         .glitch {
             position: relative;
             color: white;
@@ -194,26 +179,24 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             z-index: 1;
+            word-wrap: break-word;
         }
         .glitch::before, .glitch::after {
             content: attr(data-text);
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: transparent;
         }
         .glitch::before {
-            left: 4px;
-            text-shadow: -3px 0 #ff00c1;
+            left: 2px;
+            text-shadow: -2px 0 #ff00c1;
             clip: rect(44px, 450px, 56px, 0);
             animation: glitch-anim 3s infinite linear alternate-reverse;
             z-index: -1;
         }
         .glitch::after {
-            left: -4px;
-            text-shadow: -3px 0 #00ffcc;
+            left: -2px;
+            text-shadow: -2px 0 #00ffcc;
             clip: rect(44px, 450px, 56px, 0);
             animation: glitch-anim2 2.5s infinite linear alternate-reverse;
             z-index: -2;
@@ -221,66 +204,56 @@
 
         @keyframes glitch-anim {
             0% { clip: rect(10px, 9999px, 86px, 0); }
-            5% { clip: rect(69px, 9999px, 7px, 0); }
-            10% { clip: rect(43px, 9999px, 98px, 0); }
-            15% { clip: rect(98px, 9999px, 20px, 0); }
             20% { clip: rect(8px, 9999px, 76px, 0); }
-            25% { clip: rect(32px, 9999px, 14px, 0); }
-            30% { clip: rect(72px, 9999px, 54px, 0); }
-            35% { clip: rect(2px, 9999px, 18px, 0); }
             40% { clip: rect(90px, 9999px, 60px, 0); }
-            45% { clip: rect(40px, 9999px, 32px, 0); }
-            50% { clip: rect(15px, 9999px, 80px, 0); }
+            60% { clip: rect(5px, 9999px, 85px, 0); }
+            80% { clip: rect(40px, 9999px, 65px, 0); }
             100% { clip: rect(20px, 9999px, 85px, 0); }
         }
         @keyframes glitch-anim2 {
             0% { clip: rect(65px, 9999px, 10px, 0); }
-            5% { clip: rect(45px, 9999px, 70px, 0); }
-            10% { clip: rect(80px, 9999px, 20px, 0); }
-            15% { clip: rect(15px, 9999px, 90px, 0); }
             20% { clip: rect(90px, 9999px, 30px, 0); }
-            25% { clip: rect(30px, 9999px, 80px, 0); }
-            30% { clip: rect(70px, 9999px, 40px, 0); }
+            40% { clip: rect(10px, 9999px, 60px, 0); }
+            60% { clip: rect(85px, 9999px, 25px, 0); }
+            80% { clip: rect(40px, 9999px, 65px, 0); }
             100% { clip: rect(80px, 9999px, 50px, 0); }
         }
 
-        /* Mouse-Tracking Neon Border Glass Cards */
+        /* Glass Cards */
         .glass-card {
             background: rgba(10, 10, 10, 0.45);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(0, 255, 204, 0.05);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 204, 0.1);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             position: relative;
             z-index: 1;
         }
-        .glass-card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: inherit;
-            padding: 2px;
-            background: radial-gradient(
-                400px circle at var(--mouse-x) var(--mouse-y),
-                rgba(0, 255, 204, 0.8),
-                transparent 40%
-            );
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: -1;
-        }
         
-        @media (hover: hover) {
-            .glass-card:hover::before {
-                opacity: 1;
+        @media (hover: hover) and (pointer: fine) {
+            .glass-card::before {
+                content: "";
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                border-radius: inherit;
+                padding: 2px;
+                background: radial-gradient(
+                    400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                    rgba(0, 255, 204, 0.6),
+                    transparent 40%
+                );
+                -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+                -webkit-mask-composite: xor;
+                mask-composite: exclude;
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity 0.4s ease;
+                z-index: -1;
             }
+            .glass-card:hover::before { opacity: 1; }
             .glass-card:hover {
-                box-shadow: 0 15px 45px -10px rgba(0, 255, 204, 0.15);
-                transform: translateY(-8px) scale(1.02);
-                border-color: transparent; /* Let the before pseudo handle the border glow */
+                box-shadow: 0 10px 30px -10px rgba(0, 255, 204, 0.15);
+                transform: translateY(-5px);
             }
         }
 
@@ -290,19 +263,13 @@
             border-bottom: 1px solid rgba(0, 255, 204, 0.1);
         }
         .terminal-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-            transition: opacity 0.3s;
+            width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px;
         }
-        .terminal-dot:hover { opacity: 0.7; }
+        @media (min-width: 640px) {
+            .terminal-dot { width: 12px; height: 12px; margin-right: 8px; }
+        }
 
-        ::selection {
-            background: rgba(0, 255, 204, 0.4);
-            color: #fff;
-        }
+        ::selection { background: rgba(0, 255, 204, 0.4); color: #fff; }
         
         .typing-cursor::after {
             content: '█';
@@ -312,11 +279,7 @@
         }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* Magnetic Button Container Reset */
-        .magnetic {
-            display: inline-block;
-            transform-origin: center;
-        }
+        .magnetic { display: inline-block; transform-origin: center; }
     </style>
 </head>
 <body class="antialiased selection:bg-cyber selection:text-black overflow-hidden" id="body">
@@ -326,28 +289,25 @@
         <div id="preloader-top" class="absolute top-0 left-0 w-full h-1/2 bg-[#050505] origin-top"></div>
         <div id="preloader-bottom" class="absolute bottom-0 left-0 w-full h-1/2 bg-[#050505] origin-bottom border-t border-cyber/20"></div>
         
-        <div id="preloader-content" class="absolute inset-0 z-10 flex flex-col items-center justify-center w-full px-6">
+        <div id="preloader-content" class="absolute inset-0 z-10 flex flex-col items-center justify-center w-full px-4 sm:px-6">
             <div class="w-full max-w-2xl">
-                <p id="preloader-term" class="font-mono text-cyber text-sm md:text-base mb-8 text-left h-6"></p>
-                <h1 id="preloader-text" class="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-6 text-center tracking-widest font-mono"></h1>
+                <p id="preloader-term" class="font-mono text-cyber text-xs sm:text-sm md:text-base mb-6 text-left h-6"></p>
+                <!-- Scaled down for mobile to prevent overflow -->
+                <h1 id="preloader-text" class="text-xl sm:text-3xl md:text-5xl font-bold text-white mb-6 text-center tracking-widest font-mono"></h1>
                 <div id="preloader-bar-bg" class="w-full h-[2px] bg-gray-800 relative overflow-hidden opacity-0">
                     <div id="preloader-bar" class="h-full bg-cyber w-0 shadow-[0_0_10px_#00ffcc]"></div>
                 </div>
                 <div class="flex justify-between w-full mt-2 opacity-0" id="preloader-stats">
-                    <span class="font-mono text-xs text-gray-500">SYS.BOOT</span>
-                    <span id="preloader-percent" class="font-mono text-xs text-cyber">0%</span>
+                    <span class="font-mono text-[10px] sm:text-xs text-gray-500">SYS.BOOT</span>
+                    <span id="preloader-percent" class="font-mono text-[10px] sm:text-xs text-cyber">0%</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Hacker Background Image (Guy with laptop) -->
+    <!-- Hacker Background Image -->
     <div id="hacker-bg"></div>
-
-    <!-- CRT Effect Overlay -->
     <div class="crt-overlay"></div>
-
-    <!-- 3D Nodes Background Canvas -->
     <canvas id="bg-canvas"></canvas>
 
     <div class="cursor-dot" id="cursor-dot"></div>
@@ -355,8 +315,8 @@
 
     <!-- Navigation -->
     <nav class="fixed w-full z-50 top-0 transition-transform duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center bg-dark/70 backdrop-blur-xl border-b border-cyber/10 relative z-[60]">
-            <a href="#home" class="text-xl font-bold tracking-wider text-white hover:text-cyber transition-colors cursor-pointer nav-link">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center bg-dark/80 backdrop-blur-xl border-b border-cyber/10 relative z-[60]">
+            <a href="#home" class="text-lg sm:text-xl font-bold tracking-wider text-white hover:text-cyber transition-colors cursor-pointer nav-link">
                 <span class="text-cyber">&lt;</span>Naishal <span class="text-cyber">/&gt;</span>
             </a>
             <div class="hidden md:flex space-x-8 text-sm font-mono text-gray-400">
@@ -375,7 +335,7 @@
     
     <!-- Mobile Menu Overlay -->
     <div id="mobile-menu" class="fixed inset-0 bg-dark/95 backdrop-blur-xl z-[55] flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="flex flex-col space-y-8 text-center text-xl font-mono">
+        <div class="flex flex-col space-y-8 text-center text-lg sm:text-xl font-mono">
             <a href="#home" class="mobile-link text-gray-300 hover:text-cyber transition-colors px-4 py-2">01. Home</a>
             <a href="#about" class="mobile-link text-gray-300 hover:text-cyber transition-colors px-4 py-2">02. About</a>
             <a href="#projects" class="mobile-link text-gray-300 hover:text-cyber transition-colors px-4 py-2">03. Projects</a>
@@ -385,29 +345,29 @@
 
     <main>
         <!-- Hero Section -->
-        <section id="home" class="min-h-screen flex flex-col justify-center px-4 md:px-24 pt-20 relative overflow-hidden">
+        <section id="home" class="min-h-screen flex flex-col justify-center px-4 sm:px-8 md:px-24 pt-20 relative overflow-hidden">
             <div class="max-w-5xl z-10">
-                <p class="text-cyber font-mono mb-4 text-sm sm:text-lg gs-reveal opacity-0 translate-y-10">System status: <span class="text-green-500 animate-pulse drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]">Online</span>_</p>
+                <p class="text-cyber font-mono mb-3 sm:mb-4 text-xs sm:text-sm md:text-lg gs-reveal opacity-0 translate-y-10">System status: <span class="text-green-500 animate-pulse drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]">Online</span>_</p>
                 <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-1 gs-reveal scramble-text opacity-0 translate-y-10" data-text="Hi, I'm">
                     Hi, I'm
                 </h1>
-                <div class="glitch-wrapper mb-6 gs-reveal opacity-0 translate-y-10">
+                <div class="glitch-wrapper mb-4 sm:mb-6 gs-reveal opacity-0 translate-y-10">
                     <h1 class="glitch text-5xl sm:text-6xl md:text-8xl lg:text-9xl" data-text="Naishal.">Naishal.</h1>
                 </div>
-                <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-400 mb-8 gs-reveal scramble-text opacity-0 translate-y-10" data-text="I build things & explore systems.">
+                <h2 class="text-xl sm:text-3xl md:text-5xl font-bold text-gray-400 mb-6 sm:mb-8 gs-reveal scramble-text opacity-0 translate-y-10" data-text="I build things & explore systems.">
                     I build things & explore systems.
                 </h2>
-                <p class="max-w-2xl text-gray-400 text-base sm:text-lg mb-10 leading-relaxed font-sans gs-reveal opacity-0 translate-y-10">
+                <p class="max-w-2xl text-gray-400 text-sm sm:text-base md:text-lg mb-8 sm:mb-10 leading-relaxed font-sans gs-reveal opacity-0 translate-y-10">
                     I'm a developer and tech enthusiast with a passion for building clean, impactful digital experiences. Currently focused on developing <strong>Nexus</strong> (a modern document editor) and diving deeper into the world of Linux and development.
                 </p>
                 <div class="flex flex-col sm:flex-row flex-wrap gap-4 gs-reveal opacity-0 translate-y-10">
-                    <div class="magnetic inline-block">
-                        <a href="#projects" class="inline-block w-full text-center px-6 sm:px-8 py-3 rounded border border-cyber text-cyber font-mono hover:bg-cyber hover:text-black transition-colors duration-300 nav-link shadow-[0_0_15px_rgba(0,255,204,0.2)] hover:shadow-[0_0_30px_rgba(0,255,204,0.6)]">
+                    <div class="magnetic w-full sm:w-auto">
+                        <a href="#projects" class="block w-full sm:inline-block text-center px-6 sm:px-8 py-3 rounded border border-cyber text-cyber font-mono text-sm sm:text-base hover:bg-cyber hover:text-black transition-colors duration-300 nav-link shadow-[0_0_15px_rgba(0,255,204,0.2)] hover:shadow-[0_0_30px_rgba(0,255,204,0.6)]">
                             Check out my work!
                         </a>
                     </div>
-                    <div class="magnetic inline-block">
-                        <a href="#contact" class="inline-block w-full text-center px-6 sm:px-8 py-3 rounded border border-gray-600 text-white font-mono hover:border-cyber hover:text-cyber transition-colors duration-300 nav-link bg-dark/50 backdrop-blur">
+                    <div class="magnetic w-full sm:w-auto">
+                        <a href="#contact" class="block w-full sm:inline-block text-center px-6 sm:px-8 py-3 rounded border border-gray-600 text-white font-mono text-sm sm:text-base hover:border-cyber hover:text-cyber transition-colors duration-300 nav-link bg-dark/50 backdrop-blur">
                             Init Contact
                         </a>
                     </div>
@@ -416,32 +376,32 @@
             
             <!-- Scroll Indicator -->
             <a href="#about" class="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce gs-reveal cursor-pointer nav-link opacity-0 translate-y-10">
-                <span class="text-gray-500 font-mono text-xs mb-2 tracking-widest hidden sm:block">SCROLL</span>
+                <span class="text-gray-500 font-mono text-[10px] sm:text-xs mb-2 tracking-widest hidden sm:block">SCROLL</span>
                 <i class="fas fa-chevron-down text-cyber drop-shadow-[0_0_5px_rgba(0,255,204,0.8)]"></i>
             </a>
         </section>
 
         <!-- About Section -->
-        <section id="about" class="min-h-screen flex items-center px-4 md:px-24 py-20 relative pt-24 sm:pt-32">
-            <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 items-center">
+        <section id="about" class="min-h-screen flex items-center px-4 sm:px-8 md:px-24 py-20 relative pt-24 sm:pt-32 overflow-hidden">
+            <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 items-center">
                 
                 <div class="about-text">
-                    <div class="flex items-center gap-4 mb-8">
-                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white scramble-text" data-text="02. About Me"><span class="text-cyber font-mono">02.</span> About Me</h2>
+                    <div class="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white scramble-text" data-text="02. About Me"><span class="text-cyber font-mono text-xl sm:text-2xl">02.</span> About Me</h2>
                         <div class="h-[1px] bg-gray-700 flex-grow"></div>
                     </div>
                     
-                    <div class="space-y-4 text-gray-400 text-base sm:text-lg font-sans leading-relaxed">
+                    <div class="space-y-4 text-gray-400 text-sm sm:text-base md:text-lg font-sans leading-relaxed">
                         <p>
                             Hello! My name is Naishal. My journey in tech started with a deep curiosity about how things work under the hood. What started as exploring operating systems has evolved into building my own software and applications.
                         </p>
                         <p>
-                            Right now, my primary daily driver is <span class="text-cyber font-semibold drop-shadow-[0_0_2px_rgba(0,255,204,0.5)]">Linux Mint Cinnamon</span>, which gives me the perfect environment for development. I also actively use <span class="text-cyber font-semibold drop-shadow-[0_0_2px_rgba(0,255,204,0.5)]">Kali Linux</span> when I want to dive into security exploration and understand system vulnerabilities. 
+                            Right now, my primary daily driver is <span class="text-cyber font-semibold drop-shadow-[0_0_2px_rgba(0,255,204,0.3)]">Linux Mint Cinnamon</span>, which gives me the perfect environment for development. I also actively use <span class="text-cyber font-semibold drop-shadow-[0_0_2px_rgba(0,255,204,0.3)]">Kali Linux</span> when I want to dive into security exploration and understand system vulnerabilities. 
                         </p>
                         <p>Here are a few technologies and concepts I've been working with recently:</p>
                         
                         <ul class="grid grid-cols-2 gap-2 font-mono text-xs sm:text-sm mt-4 text-gray-300">
-                            <li class="hover:text-cyber transition-colors cursor-default"><i class="fas fa-caret-right text-cyber mr-2"></i>Linux (Mint / Kali)</li>
+                            <li class="hover:text-cyber transition-colors cursor-default"><i class="fas fa-caret-right text-cyber mr-2"></i>Linux (Mint)</li>
                             <li class="hover:text-cyber transition-colors cursor-default"><i class="fas fa-caret-right text-cyber mr-2"></i>HTML / CSS / JS</li>
                             <li class="hover:text-cyber transition-colors cursor-default"><i class="fas fa-caret-right text-cyber mr-2"></i>UI / UX Design</li>
                             <li class="hover:text-cyber transition-colors cursor-default"><i class="fas fa-caret-right text-cyber mr-2"></i>Tailwind CSS</li>
@@ -452,17 +412,17 @@
                 </div>
 
                 <!-- Live Typing Terminal Graphic -->
-                <div class="relative w-full rounded-xl overflow-hidden glass-card shadow-2xl terminal-box">
-                    <div class="terminal-header px-4 py-3 flex items-center justify-between">
+                <div class="relative w-full rounded-xl overflow-hidden glass-card shadow-2xl terminal-box border border-cyber/20 max-w-full">
+                    <div class="terminal-header px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between">
                         <div class="flex space-x-2">
                             <span class="terminal-dot bg-[#ff5f56]"></span>
                             <span class="terminal-dot bg-[#ffbd2e]"></span>
                             <span class="terminal-dot bg-[#27c93f]"></span>
                         </div>
-                        <div class="text-xs font-mono text-gray-500">naishal@mint: ~</div>
-                        <div class="w-12"></div> <!-- Spacer -->
+                        <div class="text-[10px] sm:text-xs font-mono text-gray-500">naishal@mint: ~</div>
+                        <div class="w-8 sm:w-12"></div> <!-- Spacer -->
                     </div>
-                    <div class="p-4 sm:p-6 font-mono text-xs sm:text-sm md:text-base text-gray-300 h-[280px] sm:h-[320px] overflow-y-auto bg-dark/90 break-words whitespace-pre-wrap" id="terminal-body">
+                    <div class="p-4 sm:p-6 font-mono text-xs sm:text-sm md:text-base text-gray-300 h-[260px] sm:h-[320px] overflow-y-auto bg-dark/90 break-words whitespace-pre-wrap" id="terminal-body">
                         <!-- Content will be injected by JS for typing effect -->
                         <div id="typewriter-content"></div>
                     </div>
@@ -471,87 +431,85 @@
         </section>
 
         <!-- Projects Section -->
-        <section id="projects" class="min-h-screen px-4 md:px-24 py-20 relative pt-24 sm:pt-32 glass-card-container">
+        <section id="projects" class="min-h-screen px-4 sm:px-8 md:px-24 py-20 relative pt-24 sm:pt-32 overflow-hidden">
             <div class="max-w-6xl mx-auto">
-                <div class="flex items-center gap-4 mb-12 sm:mb-16 project-header">
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white scramble-text" data-text="03. Featured Projects"><span class="text-cyber font-mono">03.</span> Featured Projects</h2>
+                <div class="flex items-center gap-3 sm:gap-4 mb-10 sm:mb-16 project-header">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white scramble-text" data-text="03. Featured Projects"><span class="text-cyber font-mono text-xl sm:text-2xl">03.</span> Featured Projects</h2>
                     <div class="h-[1px] bg-gray-700 flex-grow"></div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8" id="cards-grid">
                     <!-- Project 1: PhishGuard ZK -->
-                    <div class="glass-card rounded-2xl p-6 sm:p-8 project-card group cursor-pointer overflow-hidden bg-gradient-to-br from-dark to-[#0a1512]">
+                    <div class="glass-card rounded-2xl p-5 sm:p-8 project-card group cursor-pointer overflow-hidden bg-gradient-to-br from-dark to-[#0a1512]">
                         <div class="relative z-10">
-                            <div class="flex justify-between items-center mb-6">
-                                <i class="fas fa-shield-alt text-3xl sm:text-4xl text-cyber group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(0,255,204,0.4)]"></i>
+                            <div class="flex justify-between items-center mb-4 sm:mb-6">
+                                <i class="fas fa-shield-alt text-2xl sm:text-4xl text-cyber group-hover:-translate-y-1 sm:group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(0,255,204,0.4)]"></i>
                                 <div class="flex gap-4 magnetic">
-                                    <a href="https://github.com/naishal988/MLH-Midnight-Hackathon-Project" target="_blank" class="text-gray-400 hover:text-white transition-colors relative z-20 p-2"><i class="fab fa-github text-xl"></i></a>
+                                    <a href="https://github.com/naishal988/MLH-Midnight-Hackathon-Project" target="_blank" class="text-gray-400 hover:text-white transition-colors relative z-20 p-2"><i class="fab fa-github text-lg sm:text-xl"></i></a>
                                 </div>
                             </div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 group-hover:text-cyber transition-colors duration-300">PhishGuard ZK</h3>
-                            <p class="text-cyber/80 font-mono text-xs mb-4">by Naishal & Sruthika</p>
-                            <p class="text-gray-400 text-xs sm:text-sm mb-6 leading-relaxed">
+                            <h3 class="text-lg sm:text-2xl font-bold text-white mb-1 sm:mb-2 group-hover:text-cyber transition-colors duration-300">PhishGuard ZK</h3>
+                            <p class="text-cyber/80 font-mono text-[10px] sm:text-xs mb-3 sm:mb-4">by Naishal & Sruthika</p>
+                            <p class="text-gray-400 text-xs sm:text-sm mb-4 sm:mb-6 leading-relaxed">
                                 An Advanced AI-Powered Phishing Detector built with Zero-Trust Architecture. Developed collaboratively for the MLH Midnight Hackathon. It analyzes links and prevents users from interacting with malicious web pages.
                             </p>
-                            <ul class="flex flex-wrap gap-2 sm:gap-3 font-mono text-xs text-cyber/80">
-                                <li>AI / ML</li>
-                                <li>Zero-Trust</li>
-                                <li>Python</li>
-                                <li>Hackathon</li>
+                            <ul class="flex flex-wrap gap-2 sm:gap-3 font-mono text-[10px] sm:text-xs text-cyber/80">
+                                <li class="bg-cyber/10 px-2 py-1 rounded">AI / ML</li>
+                                <li class="bg-cyber/10 px-2 py-1 rounded">Zero-Trust</li>
+                                <li class="bg-cyber/10 px-2 py-1 rounded">Python</li>
                             </ul>
                         </div>
                     </div>
 
                     <!-- Project 2: Nexus -->
-                    <div class="glass-card rounded-2xl p-6 sm:p-8 project-card group cursor-pointer overflow-hidden bg-gradient-to-br from-dark to-[#0a1512]">
+                    <div class="glass-card rounded-2xl p-5 sm:p-8 project-card group cursor-pointer overflow-hidden bg-gradient-to-br from-dark to-[#0a1512]">
                         <div class="relative z-10">
-                            <div class="flex justify-between items-center mb-6">
-                                <i class="far fa-file-alt text-3xl sm:text-4xl text-cyber group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(0,255,204,0.4)]"></i>
+                            <div class="flex justify-between items-center mb-4 sm:mb-6">
+                                <i class="far fa-file-alt text-2xl sm:text-4xl text-cyber group-hover:-translate-y-1 sm:group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(0,255,204,0.4)]"></i>
                                 <div class="flex gap-4 magnetic">
-                                    <a href="https://github.com/naishal988" target="_blank" class="text-gray-400 hover:text-white transition-colors relative z-20 p-2"><i class="fab fa-github text-xl"></i></a>
+                                    <a href="https://github.com/naishal988" target="_blank" class="text-gray-400 hover:text-white transition-colors relative z-20 p-2"><i class="fab fa-github text-lg sm:text-xl"></i></a>
                                 </div>
                             </div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyber transition-colors duration-300">Nexus <span class="text-[10px] sm:text-xs bg-cyber/20 text-cyber px-2 py-1 rounded ml-2 align-middle">WIP</span></h3>
-                            <p class="text-gray-400 text-xs sm:text-sm mb-6 leading-relaxed">
-                                A modern, heavily customized document editor inspired by Apple Pages. Aiming to compete with giants like MS Word and Google Docs by prioritizing a clean, distraction-free writing experience and beautiful UI. Currently in active development.
+                            <h3 class="text-lg sm:text-2xl font-bold text-white mb-3 group-hover:text-cyber transition-colors duration-300">Nexus <span class="text-[9px] sm:text-[10px] bg-cyber/20 text-cyber px-2 py-1 rounded ml-2 align-middle">WIP</span></h3>
+                            <p class="text-gray-400 text-xs sm:text-sm mb-4 sm:mb-6 leading-relaxed">
+                                A modern, heavily customized document editor inspired by Apple Pages. Aiming to compete with giants like MS Word and Google Docs by prioritizing a clean, distraction-free writing experience and beautiful UI.
                             </p>
-                            <ul class="flex flex-wrap gap-2 sm:gap-3 font-mono text-xs text-cyber/80">
-                                <li>Web Dev</li>
-                                <li>UI / UX</li>
-                                <li>Productivity</li>
+                            <ul class="flex flex-wrap gap-2 sm:gap-3 font-mono text-[10px] sm:text-xs text-cyber/80">
+                                <li class="bg-cyber/10 px-2 py-1 rounded">Web Dev</li>
+                                <li class="bg-cyber/10 px-2 py-1 rounded">UI / UX</li>
+                                <li class="bg-cyber/10 px-2 py-1 rounded">Productivity</li>
                             </ul>
                         </div>
                     </div>
                     
                     <!-- Project 3: This Portfolio -->
-                    <div class="glass-card rounded-2xl p-6 sm:p-8 project-card group cursor-pointer overflow-hidden bg-gradient-to-br from-dark to-[#0a1512]">
+                    <div class="glass-card rounded-2xl p-5 sm:p-8 project-card group cursor-pointer overflow-hidden bg-gradient-to-br from-dark to-[#0a1512]">
                         <div class="relative z-10">
-                            <div class="flex justify-between items-center mb-6">
-                                <i class="fas fa-code text-3xl sm:text-4xl text-cyber group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(0,255,204,0.4)]"></i>
+                            <div class="flex justify-between items-center mb-4 sm:mb-6">
+                                <i class="fas fa-code text-2xl sm:text-4xl text-cyber group-hover:-translate-y-1 sm:group-hover:-translate-y-2 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(0,255,204,0.4)]"></i>
                                 <div class="flex gap-4 magnetic">
-                                    <a href="https://github.com/naishal988/naishal988-portfolio" target="_blank" class="text-gray-400 hover:text-white transition-colors relative z-20 p-2"><i class="fab fa-github text-xl"></i></a>
+                                    <a href="https://github.com/naishal988" target="_blank" class="text-gray-400 hover:text-white transition-colors relative z-20 p-2"><i class="fab fa-github text-lg sm:text-xl"></i></a>
                                 </div>
                             </div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyber transition-colors duration-300">Cyber Portfolio</h3>
-                            <p class="text-gray-400 text-xs sm:text-sm mb-6 leading-relaxed">
+                            <h3 class="text-lg sm:text-2xl font-bold text-white mb-3 group-hover:text-cyber transition-colors duration-300">Cyber Portfolio</h3>
+                            <p class="text-gray-400 text-xs sm:text-sm mb-4 sm:mb-6 leading-relaxed">
                                 This exact website! Built from scratch to act as my personal corner of the web. Features custom WebGL/Three.js backgrounds, native smooth scrolling, GSAP animations, and a subtle hacker-themed visual aesthetic.
                             </p>
-                            <ul class="flex flex-wrap gap-2 sm:gap-3 font-mono text-xs text-cyber/80">
-                                <li>HTML/CSS</li>
-                                <li>Three.js</li>
-                                <li>GSAP</li>
-                                <li>Vanilla JS</li>
+                            <ul class="flex flex-wrap gap-2 sm:gap-3 font-mono text-[10px] sm:text-xs text-cyber/80">
+                                <li class="bg-cyber/10 px-2 py-1 rounded">Three.js</li>
+                                <li class="bg-cyber/10 px-2 py-1 rounded">GSAP</li>
+                                <li class="bg-cyber/10 px-2 py-1 rounded">Tailwind CSS</li>
                             </ul>
                         </div>
                     </div>
 
                     <!-- Project 4 (View More) -->
-                    <div class="glass-card rounded-2xl p-6 sm:p-8 project-card group cursor-pointer overflow-hidden flex flex-col justify-center items-center text-center bg-dark/30 hover:bg-dark/60 transition-colors">
+                    <div class="glass-card rounded-2xl p-5 sm:p-8 project-card group cursor-pointer overflow-hidden flex flex-col justify-center items-center text-center bg-dark/30 hover:bg-dark/60 transition-colors">
                         <div class="relative z-10 flex flex-col items-center">
-                            <i class="fab fa-github text-4xl sm:text-5xl text-gray-500 mb-4 group-hover:text-cyber transition-colors transform group-hover:scale-110 duration-300"></i>
-                            <h3 class="text-lg sm:text-xl font-bold text-gray-400 group-hover:text-white transition-colors">View More Work</h3>
-                            <div class="magnetic mt-6">
-                                <a href="https://github.com/naishal988" target="_blank" class="px-5 py-2 border border-gray-600 rounded text-xs sm:text-sm font-mono hover:border-cyber hover:bg-cyber hover:text-black transition-all">Go to Profile</a>
+                            <i class="fab fa-github text-3xl sm:text-5xl text-gray-500 mb-3 sm:mb-4 group-hover:text-cyber transition-colors transform group-hover:scale-110 duration-300"></i>
+                            <h3 class="text-base sm:text-xl font-bold text-gray-400 group-hover:text-white transition-colors">View More Work</h3>
+                            <div class="magnetic mt-4 sm:mt-6">
+                                <a href="https://github.com/naishal988" target="_blank" class="px-4 sm:px-5 py-2 border border-gray-600 rounded text-xs sm:text-sm font-mono hover:border-cyber hover:bg-cyber hover:text-black transition-all">Go to Profile</a>
                             </div>
                         </div>
                     </div>
@@ -560,15 +518,15 @@
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="min-h-[70vh] sm:min-h-[80vh] flex flex-col items-center justify-center px-4 py-20 relative text-center pt-24 sm:pt-32">
+        <section id="contact" class="min-h-[70vh] flex flex-col items-center justify-center px-4 py-20 relative text-center pt-24 sm:pt-32 overflow-hidden">
             <div class="max-w-2xl w-full contact-content z-10">
-                <p class="text-cyber font-mono mb-4 text-xs sm:text-sm tracking-widest uppercase scramble-text" data-text="04. What's Next?">04. What's Next?</p>
-                <h2 class="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 scramble-text" data-text="Get In Touch">Get In Touch</h2>
-                <p class="text-gray-400 text-base sm:text-lg mb-8 sm:mb-10 leading-relaxed font-sans px-2">
+                <p class="text-cyber font-mono mb-3 sm:mb-4 text-[10px] sm:text-sm tracking-widest uppercase scramble-text" data-text="04. What's Next?">04. What's Next?</p>
+                <h2 class="text-3xl sm:text-5xl md:text-7xl font-bold text-white mb-4 sm:mb-6 scramble-text" data-text="Get In Touch">Get In Touch</h2>
+                <p class="text-gray-400 text-sm sm:text-base md:text-lg mb-8 sm:mb-10 leading-relaxed font-sans px-2">
                     Whether you want to discuss tech, collaborate on an open-source project, or just say hi, my inbox is always open. I'll try my best to get back to you!
                 </p>
                 <div class="magnetic inline-block">
-                    <a href="mailto:naishalpnadiya988@gmail.com" class="inline-block px-8 sm:px-12 py-3 sm:py-4 rounded border-2 border-cyber text-cyber font-mono text-base sm:text-lg font-bold hover:bg-cyber hover:text-black transition-colors duration-300 shadow-[0_0_20px_rgba(0,255,204,0.3)] hover:shadow-[0_0_40px_rgba(0,255,204,0.8)] nav-link">
+                    <a href="mailto:naishalpnadiya988@gmail.com" class="inline-block px-8 sm:px-12 py-3 sm:py-4 rounded border-2 border-cyber text-cyber font-mono text-sm sm:text-lg font-bold hover:bg-cyber hover:text-black transition-colors duration-300 shadow-[0_0_15px_rgba(0,255,204,0.3)] hover:shadow-[0_0_40px_rgba(0,255,204,0.8)] nav-link">
                         Say Hello
                     </a>
                 </div>
@@ -595,18 +553,14 @@
         import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
         import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
-        // Helper
         const isMobile = window.innerWidth < 768;
 
         // --- 0. Preloader & GSAP Sequence ---
         const initPreloader = () => {
             const tl = gsap.timeline({
                 onComplete: () => {
-                    // Unlock scrolling
                     document.getElementById('body').classList.remove('overflow-hidden');
-                    // Hide preloader completely to free DOM
                     document.getElementById('preloader').style.display = 'none';
-                    // Fire hero animations
                     playHeroAnimations();
                 }
             });
@@ -623,11 +577,11 @@
                 }
             });
 
-            tl.to({}, { duration: 0.3 }); // Small pause after typing
+            tl.to({}, { duration: 0.3 }); 
 
             // Phase 2: Decrypting & Loading Bar
             const preloaderText = document.getElementById('preloader-text');
-            const originalText = "DECRYPTING SYSTEM";
+            const originalText = "DECRYPTING"; // Shortened for mobile
             const chars = '01!@#$%^&*<>_\\/[]{}';
 
             tl.to(["#preloader-bar-bg", "#preloader-stats"], { opacity: 1, duration: 0.2 });
@@ -637,11 +591,9 @@
                 duration: 2.2,
                 ease: "power2.inOut",
                 onUpdate: function() {
-                    // Loading Percentage
                     const p = this.progress();
                     document.getElementById('preloader-percent').innerText = Math.floor(p * 100) + "%";
                     
-                    // Scramble text effect
                     let current = '';
                     for(let i = 0; i < originalText.length; i++) {
                         if (originalText[i] === ' ') {
@@ -657,7 +609,7 @@
                     preloaderText.innerText = current;
                 },
                 onComplete: function() {
-                    preloaderText.innerText = originalText;
+                    preloaderText.innerText = "ACCESS GRANTED";
                 }
             });
 
@@ -665,12 +617,11 @@
             tl.to(preloaderText, {
                 duration: 0.1,
                 onStart: () => {
-                    preloaderText.innerText = "ACCESS GRANTED";
                     preloaderText.classList.add("text-cyber", "drop-shadow-[0_0_15px_#00ffcc]");
                 }
             }, "+=0.2");
 
-            tl.to({}, { duration: 0.6 }); // Hold briefly so user reads it
+            tl.to({}, { duration: 0.6 }); 
 
             // Phase 4: Fade content & Split Reveal
             tl.to("#preloader-content", {
@@ -695,7 +646,7 @@
         const playHeroAnimations = () => {
             const heroTimeline = gsap.timeline();
             heroTimeline.to(".gs-reveal", 
-                { y: 0, opacity: 1, duration: 1, stagger: 0.12, ease: "power3.out" }
+                { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out" }
             );
         };
 
@@ -727,14 +678,21 @@
 
             mobileMenuBtn.addEventListener('click', () => toggleMobileMenu());
             mobileLinks.forEach(link => {
-                link.addEventListener('click', () => toggleMobileMenu(true));
+                link.addEventListener('click', (e) => {
+                    toggleMobileMenu(true);
+                    // Handle smooth scroll manually for mobile menu links
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    setTimeout(() => {
+                        document.querySelector(targetId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300); // Wait for menu to fade out
+                });
             });
         };
 
         // --- 2. Custom Cursor Logic ---
         const initCursor = () => {
-            // Only init cursor logic if not on a touch device
-            if(window.matchMedia("(pointer: coarse)").matches) return;
+            if(window.matchMedia("(pointer: coarse)").matches || isMobile) return;
 
             const cursorDot = document.getElementById('cursor-dot');
             const cursorOutline = document.getElementById('cursor-outline');
@@ -771,9 +729,9 @@
             });
         };
 
-        // --- 3. Magnetic Buttons ---
+        // --- 3. Magnetic Buttons (Desktop Only) ---
         const initMagneticButtons = () => {
-            if (isMobile) return; // Disable complex physics on mobile
+            if (isMobile) return; 
             
             const magnets = document.querySelectorAll('.magnetic');
             magnets.forEach(btn => {
@@ -802,7 +760,7 @@
             });
         };
 
-        // --- 4. Glass Card Mouse Tracking ---
+        // --- 4. Glass Card Mouse Tracking (Desktop Only) ---
         const initGlassCards = () => {
             if (isMobile) return;
 
@@ -817,8 +775,8 @@
             });
         };
 
-        // --- 5. Smooth Scrolling ---
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        // --- 5. Smooth Scrolling (Desktop Navbar) ---
+        document.querySelectorAll('a[href^="#"]:not(.mobile-link)').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
@@ -882,7 +840,7 @@
         const terminalCommands = [
             { text: "whoami", delay: 800, output: "naishal" },
             { text: "cat skills.txt", delay: 1500, output: "[+] Linux (Mint/Kali)<br>[+] Web Development<br>[+] UI/UX Design<br>[+] Security Exploration" },
-            { text: "./build_nexus.sh", delay: 2000, output: "<span class='text-cyber animate-pulse drop-shadow-[0_0_5px_rgba(0,255,204,0.8)]'>Compiling dependencies... Building Nexus environment.</span>" }
+            { text: "./build_nexus.sh", delay: 2000, output: "<span class='text-cyber animate-pulse drop-shadow-[0_0_5px_rgba(0,255,204,0.8)]'>Compiling dependencies...<br>Building Nexus environment.</span>" }
         ];
 
         const typewriterContent = document.getElementById('typewriter-content');
@@ -899,7 +857,7 @@
                 const cmd = terminalCommands[i];
                 
                 const line = document.createElement('div');
-                line.className = 'mb-2';
+                line.className = 'mb-2 break-all sm:break-normal'; // Prevents text overflow on tiny screens
                 line.innerHTML = `<span class="text-green-400">naishal@mint</span>:<span class="text-blue-400">~</span>$ <span class="cmd-text typing-cursor"></span>`;
                 typewriterContent.appendChild(line);
                 
@@ -926,7 +884,7 @@
             typewriterContent.appendChild(finalLine);
         };
 
-        // --- 9. WebGL Three.js Background with Bloom ---
+        // --- 9. WebGL Three.js Background (HEAVILY OPTIMIZED FOR MOBILE) ---
         const initThreeJS = () => {
             const canvas = document.getElementById('bg-canvas');
             const scene = new THREE.Scene();
@@ -934,9 +892,11 @@
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.position.z = 180;
 
-            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
+            // Turn off antialias on mobile for massive performance boost
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: !isMobile, powerPreference: "high-performance" });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            // Cap pixel ratio on mobile to prevent Bloom from lagging
+            renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
 
             // Post-processing Bloom
             const renderScene = new RenderPass(scene, camera);
@@ -949,8 +909,8 @@
             composer.addPass(renderScene);
             composer.addPass(bloomPass);
 
-            // Network Particles (reduced for mobile performance)
-            const particlesCount = isMobile ? 120 : 350; 
+            // Network Particles (Drastically reduced for mobile to maintain 60fps with Bloom)
+            const particlesCount = isMobile ? 70 : 350; 
             const positions = new Float32Array(particlesCount * 3);
             const velocities = [];
 
@@ -971,7 +931,7 @@
 
             const particleMaterial = new THREE.PointsMaterial({
                 color: 0x00ffcc,
-                size: 2.0,
+                size: isMobile ? 3.0 : 2.0, // Slightly larger on mobile to compensate for fewer count
                 transparent: true,
                 opacity: 0.8,
                 blending: THREE.AdditiveBlending
@@ -1008,8 +968,7 @@
 
             const animate = () => {
                 requestAnimationFrame(animate);
-                const elapsedTime = clock.getElapsedTime();
-
+                
                 // Mouse Parallax (Desktop) vs Auto Rotation (Mobile)
                 if (isMobile) {
                     particles.rotation.y += 0.001;
@@ -1045,7 +1004,7 @@
                         const dz = pos[i*3+2] - pos[j*3+2];
                         const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
                         
-                        if(dist < 60) { 
+                        if(dist < 70) { 
                             linePositions.push(
                                 pos[i*3], pos[i*3+1], pos[i*3+2],
                                 pos[j*3], pos[j*3+1], pos[j*3+2]
@@ -1057,7 +1016,7 @@
                 particles.geometry.attributes.position.needsUpdate = true;
                 lineMesh.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
 
-                composer.render(); // Use composer instead of renderer for bloom
+                composer.render(); 
             };
 
             animate();
@@ -1078,7 +1037,7 @@
             document.querySelectorAll('.scramble-text:not(.gs-reveal)').forEach(el => {
                 ScrollTrigger.create({
                     trigger: el,
-                    start: "top 90%", // Trigger slightly earlier for mobile screens
+                    start: "top 90%",
                     onEnter: () => scrambleText(el)
                 });
             });
@@ -1129,9 +1088,9 @@
             );
 
             gsap.fromTo(".project-card",
-                { y: 60, opacity: 0 },
+                { y: isMobile ? 40 : 60, opacity: 0 },
                 {
-                    scrollTrigger: { trigger: "#projects", start: "top 80%" },
+                    scrollTrigger: { trigger: "#projects", start: "top 85%" },
                     y: 0, opacity: 1, duration: 0.6, stagger: isMobile ? 0 : 0.15, ease: "back.out(1.2)"
                 }
             );
@@ -1154,7 +1113,7 @@
             initGlassCards();
             initThreeJS();
             initGSAP();
-            initPreloader(); // Fire the loader which subsequently triggers hero animations
+            initPreloader(); 
         };
     </script>
 </body>
