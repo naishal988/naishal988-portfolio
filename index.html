@@ -57,7 +57,6 @@
     </script>
 
     <style>
-        /* Bulletproof Smooth Scrolling */
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 80px;
@@ -68,14 +67,13 @@
             padding: 0;
             width: 100%;
             max-width: 100vw;
-            height: 100%;
+            min-height: 100vh; /* FIXED FOR MOBILE SCROLLING */
             background-color: #050505;
             color: #ffffff;
             overflow-x: hidden; 
             cursor: none; 
         }
 
-        /* Feature 4: Global Scroll Progress Matrix-Bar */
         #scroll-progress {
             position: fixed;
             top: 0;
@@ -89,7 +87,6 @@
             pointer-events: none;
         }
 
-        /* 3D Canvas Background */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -101,7 +98,6 @@
             pointer-events: none;
         }
 
-        /* Hacker Background Image - Cinematic Glitch & Fade Setup */
         #hacker-bg {
             position: fixed;
             top: 0;
@@ -133,7 +129,6 @@
             100% { transform: translate(0); clip-path: inset(0 0 0 0); filter: drop-shadow(0); }
         }
 
-        /* Next Level CRT Flicker & Scanlines */
         .crt-overlay {
             position: fixed;
             top: 0;
@@ -157,34 +152,26 @@
             100% { opacity: 0.15; transform: translateY(1px); }
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: #003328; border-radius: 4px; transition: background 0.3s; }
         ::-webkit-scrollbar-thumb:hover { background: #00ffcc; }
 
-        /* Custom Cursor */
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #00ffcc;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 999999;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffcc;
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 999999; pointer-events: none;
+            mix-blend-mode: difference; /* THIS INVERTS COLORS BENEATH IT */
+        }
+        .cursor-dot { 
+            width: 8px; height: 8px; background-color: #fff; 
         }
         .cursor-outline {
-            width: 44px;
-            height: 44px;
-            border: 1px solid rgba(0, 255, 204, 0.4);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 999998;
-            transform: translate(-50%, -50%);
-            transition: width 0.15s, height 0.15s, background-color 0.15s, border-color 0.15s;
+            width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.5);
+            transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
+        }
+        /* When hovering interactable elements, expand and fill the cursor */
+        body.cursor-hover .cursor-outline { 
+            width: 70px; height: 70px; background: rgba(255,255,255,1); border-color: transparent; 
         }
         
         @media (pointer: coarse) {
@@ -192,7 +179,6 @@
             body, html { cursor: auto; }
         }
 
-        /* Glitch Effect for the Name */
         .glitch-wrapper { position: relative; }
         .glitch {
             position: relative; color: white; font-weight: 700; text-transform: uppercase;
@@ -228,7 +214,6 @@
             100% { clip: rect(80px, 9999px, 50px, 0); }
         }
 
-        /* Mouse-Tracking Neon Border Glass Cards */
         .glass-card {
             background: rgba(10, 10, 10, 0.45);
             backdrop-filter: blur(16px);
@@ -252,7 +237,6 @@
             }
         }
 
-        /* Terminal Style */
         .terminal-header { background: #0a0a0a; border-bottom: 1px solid rgba(0, 255, 204, 0.1); }
         .terminal-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 8px; transition: opacity 0.3s; }
         .terminal-dot:hover { opacity: 0.7; }
@@ -264,7 +248,7 @@
 
         .magnetic { display: inline-block; transform-origin: center; }
 
-        /* Feature 3: Vertical Timeline Styles */
+        /* Feature 3: Vertical Timeline Styles (FIXED OVERLAP BUG) */
         .timeline-line {
             width: 2px;
             background: linear-gradient(to bottom, #00ffcc, transparent);
@@ -275,7 +259,7 @@
         .timeline-dot {
             width: 10px; height: 10px; border-radius: 50%;
             background: #00ffcc; border: 2px solid #050505;
-            position: absolute; left: -25px; top: 6px;
+            position: absolute; left: -25px; top: 6px; /* Moved left to prevent overlap */
             box-shadow: 0 0 10px #00ffcc;
             opacity: 0; transform: scale(0); 
         }
@@ -355,7 +339,7 @@
                     Hi, I'm
                 </h1>
                 <div class="glitch-wrapper mb-6 gs-reveal opacity-0 translate-y-10">
-                    <h1 class="glitch text-4xl sm:text-6xl md:text-8xl lg:text-9xl" data-text="Naishal.">Naishal.</h1>
+                    <h1 class="glitch text-5xl sm:text-6xl md:text-8xl lg:text-9xl" data-text="Naishal.">Naishal.</h1>
                 </div>
                 <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-400 mb-8 gs-reveal scramble-text opacity-0 translate-y-10" data-text="I build things & explore systems.">
                     I build things & explore systems.
@@ -385,8 +369,8 @@
 
         <!-- Infinite Tech Stack Marquee -->
         <div class="w-full bg-dark/80 backdrop-blur-md border-y border-cyber/10 py-4 overflow-hidden relative z-10 gs-reveal opacity-0">
-            <div class="flex w-[200%] animate-marquee font-mono text-xs sm:text-sm tracking-widest text-cyber/70">
-                <span class="w-1/2 flex justify-around items-center">
+            <div class="flex w-max animate-marquee font-mono text-xs sm:text-sm tracking-widest text-cyber/70">
+                <span class="flex items-center gap-8 px-4 whitespace-nowrap">
                     <span>// LINUX MINT</span>
                     <span>// PYTHON</span>
                     <span>// KALI LINUX</span>
@@ -396,7 +380,7 @@
                     <span>// ZERO-TRUST</span>
                     <span>// DOM MANIPULATION</span>
                 </span>
-                <span class="w-1/2 flex justify-around items-center">
+                <span class="flex items-center gap-8 px-4 whitespace-nowrap">
                     <span>// LINUX MINT</span>
                     <span>// PYTHON</span>
                     <span>// KALI LINUX</span>
@@ -615,17 +599,13 @@
                         </div>
                     </div>
 
-                    <!-- Project 4 (View More - Now a Full Width Banner) -->
-                    <div class="glass-card rounded-2xl p-6 sm:p-8 project-card md:col-span-2 group overflow-hidden flex flex-col md:flex-row justify-between items-center text-center md:text-left bg-dark/30 hover:bg-dark/60 transition-colors cursor-default">
-                        <div class="relative z-10 flex flex-col md:flex-row items-center w-full justify-between">
-                            <div class="flex flex-col items-center md:items-start mb-4 md:mb-0">
-                                <h3 class="text-lg sm:text-xl font-bold text-gray-400 group-hover:text-white transition-colors">View More Work on GitHub</h3>
-                                <p class="text-xs text-gray-500 font-mono mt-2">Explore source codes and other open-source tools.</p>
-                            </div>
-                            <div class="magnetic">
-                                <a href="https://github.com/naishal988" target="_blank" class="px-6 py-3 border border-gray-600 rounded text-xs sm:text-sm font-mono hover:border-cyber hover:bg-cyber hover:text-black transition-all cursor-pointer flex items-center gap-2">
-                                    <i class="fab fa-github text-lg"></i> Go to Profile
-                                </a>
+                    <!-- Project 4 (View More - Not expandable) -->
+                    <div class="glass-card rounded-2xl p-6 sm:p-8 project-card group overflow-hidden flex flex-col justify-center items-center text-center bg-dark/30 hover:bg-dark/60 transition-colors cursor-default">
+                        <div class="relative z-10 flex flex-col items-center">
+                            <i class="fab fa-github text-4xl sm:text-5xl text-gray-500 mb-4 group-hover:text-cyber transition-colors transform group-hover:scale-110 duration-300"></i>
+                            <h3 class="text-lg sm:text-xl font-bold text-gray-400 group-hover:text-white transition-colors">View More Work</h3>
+                            <div class="magnetic mt-6">
+                                <a href="https://github.com/naishal988" target="_blank" class="px-5 py-2 border border-gray-600 rounded text-xs sm:text-sm font-mono hover:border-cyber hover:bg-cyber hover:text-black transition-all cursor-pointer">Go to Profile</a>
                             </div>
                         </div>
                     </div>
@@ -764,29 +744,39 @@
             document.querySelectorAll('.mobile-link').forEach(link => { link.addEventListener('click', () => toggleMobileMenu(true)); });
         };
 
-        // --- 2. Custom Cursor ---
+        // --- 2. Custom Mix-Blend Cursor (From PhishGuard ZK v2) ---
         const initCursor = () => {
             if(window.matchMedia("(pointer: coarse)").matches) return;
+            
             const cursorDot = document.getElementById('cursor-dot');
             const cursorOutline = document.getElementById('cursor-outline');
-            const interactiveElements = document.querySelectorAll('a, button, .cursor-pointer, .nav-link, .magnetic, .expandable-card');
-
+            let mouseX = window.innerWidth / 2; 
+            let mouseY = window.innerHeight / 2;
+            let outlineX = mouseX; 
+            let outlineY = mouseY;
+            
             window.addEventListener('mousemove', (e) => {
-                cursorDot.style.left = `${e.clientX}px`; cursorDot.style.top = `${e.clientY}px`;
-                cursorOutline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 300, fill: "forwards" });
+                mouseX = e.clientX; 
+                mouseY = e.clientY;
+                cursorDot.style.left = `${mouseX}px`; 
+                cursorDot.style.top = `${mouseY}px`;
             });
 
+            // Smooth LERP animation for the outer circle
+            const animateCursor = () => {
+                outlineX += (mouseX - outlineX) * 0.2;
+                outlineY += (mouseY - outlineY) * 0.2;
+                cursorOutline.style.left = `${outlineX}px`;
+                cursorOutline.style.top = `${outlineY}px`;
+                requestAnimationFrame(animateCursor);
+            };
+            animateCursor();
+
+            // Toggle .cursor-hover class on body for interactive elements
+            const interactiveElements = document.querySelectorAll('a, button, .cursor-pointer, .nav-link, .magnetic, .expandable-card');
             interactiveElements.forEach(el => {
-                el.addEventListener('mouseenter', () => {
-                    cursorOutline.style.width = '60px'; cursorOutline.style.height = '60px';
-                    cursorOutline.style.backgroundColor = 'rgba(0, 255, 204, 0.1)'; cursorOutline.style.borderColor = '#00ffcc';
-                    cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                });
-                el.addEventListener('mouseleave', () => {
-                    cursorOutline.style.width = '44px'; cursorOutline.style.height = '44px';
-                    cursorOutline.style.backgroundColor = 'transparent'; cursorOutline.style.borderColor = 'rgba(0, 255, 204, 0.4)';
-                    cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
-                });
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
             });
         };
 
@@ -1078,7 +1068,13 @@
 
         window.onload = () => {
             initMobileMenu(); initCursor(); initMagneticButtons(); initGlassCards(); initProjectExpansion();
-            initThreeJS(); initGSAP(); initPreloader(); 
+            initGSAP();
+            
+            // Failsafe for ThreeJS on mobile browsers
+            try { initThreeJS(); } catch (error) { console.warn("3D BG Disabled:", error); }
+            
+            // Critical to release the screen lock
+            initPreloader(); 
         };
     </script>
 </body>
